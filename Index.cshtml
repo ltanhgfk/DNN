@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Dnn.Modules.MVCPartialTest.Models.Item>
+     <div id='@Html.Raw("currenttime" + Dnn.ModuleContext.ModuleId)'>@Html.Partial("_PartialTest", @Model)</div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var rvtoken = $("input[name='__RequestVerificationToken']").val();
+            var ModuleId= @Dnn.ModuleContext.ModuleId;
+            var TabId = @Dnn.ModuleContext.TabId;
+            setInterval(function() {
+                $.ajax({
+                        url: "/DesktopModules/MVC/MVCPartialTest/Item/GetP",
+                        method: "Post",
+                        headers: {
+                            "ModuleId": ModuleId,
+                            "TabId": TabId,
+                            "RequestVerificationToken": rvtoken
+                        }
+                    })
+                    .done(function(data) {
+                        if (console && console.log) {
+                            $('@Html.Raw("#currenttime" + Dnn.ModuleContext.ModuleId)').html(data);
+                        }
+                    });
+            }, 1000);
+        });
+    </script>
